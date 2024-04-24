@@ -2,7 +2,7 @@
 # Affiliation: National Center for Atmospheric Research, Computational and Information Systems Laboratory
 # Created: 03-29-2024
 
-FROM ssuresh1809/samurai:latest
+FROM ssuresh1809/samurai:nvhpc24_3
 
 LABEL maintainer="Supreeth Suresh <ssuresh@ucar.edu>"
 
@@ -10,7 +10,7 @@ RUN mkdir -p /app/
 WORKDIR /app/
 RUN git clone https://github.com/mmbell/samurai.git && \
     cd samurai && \
-    sed -i 's/MODE GPU/MODE CPU/g' CMakeLists.txt && \
+    #sed -i 's/MODE GPU/MODE CPU/g' CMakeLists.txt && \
     mkdir build && \
     cd build && \
     cmake .. && \
