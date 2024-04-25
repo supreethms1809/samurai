@@ -1,0 +1,36 @@
+# Author: Supreeth Suresh
+# Affiliation: National Center for Atmospheric Research, Computational and Information Systems Laboratory
+# Created: 03-29-2024
+
+Bootstrap: docker
+FROM: ssuresh1809/samurai:nvhpc24_3
+
+%labels
+    Description This is a container for running samurai on GPU
+    Author Supreeth Suresh <ssuresh@ucar.edu>
+
+%post
+    mkdir -p /app/ 
+    cd /app/
+    git clone https://github.com/mmbell/samurai.git && \
+    cd samurai && \
+    #sed -i 's/MODE GPU/MODE CPU/g' CMakeLists.txt && \
+    mkdir build && \
+    cd build && \
+    cmake .. && \
+    make -j 8 VERBOSE=1
+    echo "#!/bin/bash \n\
+    cd /app/samurai/build/release/bin/ \n\
+    ./samurai /app/data/beltrami_preprocessed.xml\
+    " > /app/run_samurai.sh
+
+    chmod +x /app/run_samurai.sh
+
+%environment
+    export PATH="/app/samurai/build:${PATH}"
+    export LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+    export PATH="/usr/local/bin:${PATH}"
+
+%runscript
+    cd /app/
+    ./run_samurai.sh
