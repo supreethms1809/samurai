@@ -1,4 +1,4 @@
-name: Samurai CPU test with Beltrami
+name: Samurai GPU test with Beltrami
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag samurai_build_run:latest
-    - name: Running the Docker image for Beltrami case
-      run: docker run samurai_build_run:latest
+    - name: Build the apptainer image
+      run: apptainer build --nv samurai_nvhpc.sif apptainer.def
+    - name: Running the apptainer image for Beltrami case
+      run: apptainer run --nv samurai_nvhpc.sif
