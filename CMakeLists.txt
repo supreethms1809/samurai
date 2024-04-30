@@ -6,10 +6,21 @@ project(samurai)
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
 # NCAR: Options are 'CPU' or 'GPU' - CPU enables OpenMP, GPU enables OpenACC(default: CPU)
-set(MODE GPU)
+# When invoking cmake, add -DUSE_GPU=true to the args. 
+string(TOLOWER "${USE_GPU}" use_gpu_lower )
+if(use_gpu_lower STREQUAL "true")
+  set(MODE GPU)
+else()
+  set(MODE CPU)
+endif()
 
 # Standard: Options are 'Debug' or 'Release'
-set(CMAKE_BUILD_TYPE Debug)
+string(TOLOWER "${DEBUG_COMPILE}" debug_compile_lower )
+if(debug_compile_lower STREQUAL "true")
+  set(CMAKE_BUILD_TYPE Debug)
+else()
+  set(CMAKE_BUILD_TYPE Release)
+endif()
 
 # max iterations in the solver(src/CostFunction.cpp) default=2000
 set(SOLVER_MAXITER 2000)
@@ -42,7 +53,7 @@ set(SOLVER_CG_CONV_TYPE 1)
 set(IO_BENCHMARK 0)
 
 # Controls whether we write out the observations after reading them all in(probably safe to be 0)
-set(IO_WRITEOBS 1)
+set(IO_WRITEOBS 0)
 
 # ----- Users shouldn't need to change anything below this ----- 
 
