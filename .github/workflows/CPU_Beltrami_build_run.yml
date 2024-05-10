@@ -1,10 +1,12 @@
 name: Samurai CPU test with Beltrami
 
 on:
+  workflow_dispatch:
+    branches: [ "main" ]
   push:
-    branches: [ "master" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "main" ]
 
 jobs:
 
